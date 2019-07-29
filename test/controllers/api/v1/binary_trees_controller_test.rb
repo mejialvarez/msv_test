@@ -12,4 +12,31 @@ class BinaryTreesControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :unprocessable_entity
   end
+
+  test "GET#lowest_common_ancestor return 422 if the node1 parameter doesn't belong to binary tree" do
+    binary_tree = binary_trees(:one)
+    get lowest_common_ancestor_api_v1_binary_tree_path(binary_tree), params: { node1: 100, node2: 76 }
+
+    assert_response :unprocessable_entity
+    body = JSON.parse(response.body)
+    assert_equal "The values of the nodes don't belong to the binary tree", body['error']
+  end
+
+  test "GET#lowest_common_ancestor return 422 if the node2 parameter doesn't belong to binary tree" do
+    binary_tree = binary_trees(:one)
+    get lowest_common_ancestor_api_v1_binary_tree_path(binary_tree), params: { node1: 39, node2: 100 }
+
+    assert_response :unprocessable_entity
+    body = JSON.parse(response.body)
+    assert_equal "The values of the nodes don't belong to the binary tree", body['error']
+  end
+
+  test "GET#lowest_common_ancestor return a json with the lowest common ancestor" do
+    binary_tree = binary_trees(:one)
+    get lowest_common_ancestor_api_v1_binary_tree_path(binary_tree), params: { node1: 39, node2: 76 }
+
+    assert_response :success
+    body = JSON.parse(response.body)
+    assert_equal 67, body['lowest_common_ancestor']
+  end
 end
