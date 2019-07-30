@@ -12,9 +12,6 @@ class BinaryTree::BinaryTree
   end
 
   def lowest_common_ancestor(node_value1, node_value2)
-    node_value1 = node_value1.to_i
-    node_value2 = node_value2.to_i
-
     return nil if @root.nil? || !exists?(node_value1) || !exists?(node_value2)
     get_lca(@root, node_value1, node_value2)
   end
@@ -22,17 +19,25 @@ class BinaryTree::BinaryTree
   private
     def add_node(ancestor, value)
       if(value > ancestor.value)
-        if(ancestor.right)
-          add_node(ancestor.right, value)
-        else
-          ancestor.right = BinaryTree::Node.new(value)
-        end
+        add_right_node(ancestor, value)
       elsif(value < ancestor.value)
-        if(ancestor.left)
-          add_node(ancestor.left, value)
-        else
-          ancestor.left = BinaryTree::Node.new(value)
-        end
+        add_left_node(ancestor, value)
+      end
+    end
+
+    def add_right_node(ancestor, value)
+      if(ancestor.right)
+        add_node(ancestor.right, value)
+      else
+        ancestor.right = BinaryTree::Node.new(value)
+      end
+    end
+
+    def add_left_node(ancestor, value)
+      if(ancestor.left)
+        add_node(ancestor.left, value)
+      else
+        ancestor.left = BinaryTree::Node.new(value)
       end
     end
 

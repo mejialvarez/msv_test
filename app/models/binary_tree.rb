@@ -13,7 +13,7 @@ class BinaryTree < ApplicationRecord
 
   def lowest_common_ancestor(node_value1, node_value2)
     tree = ::BinaryTree::BinaryTree.new(self.nodes).build
-    tree.lowest_common_ancestor(node_value1, node_value2)
+    tree.lowest_common_ancestor(node_value1.to_i, node_value2.to_i)
   end
 
   def exist?(node_value)
